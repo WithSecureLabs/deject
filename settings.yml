@@ -1,0 +1,5 @@
+env_variables:
+  vt_key: VT_KEY
+  yara_rule: RULES
+  zeek_path: ZEEK_PATH
+  bulk_path: BULK_PATH

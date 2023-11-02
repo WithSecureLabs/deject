@@ -1,0 +1,26 @@
+*__pycache__*
+*.DMP
+
+# Python
+.cache
+.coverage
+build
+htmlcov
+*.egg*
+*.pyc
+*.pytest*
+.venv
+*.mypy_cache
+
+# Vim
+*.sw*
+app.log
+
+# Pychar
+*.idea*
+
+#vscode
+.vscode
+.VSCode*
+dist
+docs

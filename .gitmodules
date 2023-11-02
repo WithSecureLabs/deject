@@ -1,0 +1,9 @@
+[submodule "scripts/extractors/MalwareConfigExtractor"]
+	path = scripts/extractors/MalwareConfigExtractor
+	url = https://github.com/c3rb3ru5d3d53c/mwcfg-modules.git
+[submodule "scripts/extractors/RelayRumbler"]
+	path = scripts/extractors/RelayRumbler
+	url = https://github.com/ajpc500/RelayRumbler
+[submodule "scripts/yara-rules"]
+	path = scripts/yara-rules
+	url = https://github.com/elastic/protections-artifacts.git
