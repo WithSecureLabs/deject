@@ -6,6 +6,7 @@
 This project has the following dependencies that cannot be installed via Python:
 * Poetry - Dependency management for Python (https://python-poetry.org/)
 * Radare2/Rizin - Reverse Engineering Framework (https://rada.re/ / https://rizin.re/)
+* libfuzzy-dev
 
 Required for M2Crypto:
 * libssl-dev
