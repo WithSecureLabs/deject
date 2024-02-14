@@ -1,5 +1,5 @@
 FROM ubuntu:22.04 AS builder
-RUN apt update && apt upgrade -y && DEBIAN_FRONTEND=noninteractive apt install autoconf automake flex gcc g++ libssl-dev zlib1g-dev libexpat1-dev libxml2-dev dpkg-dev openssl patch wget bison git libewf-dev -y
+RUN apt update && apt upgrade -y && DEBIAN_FRONTEND=noninteractive apt install autoconf automake flex gcc g++ libssl-dev zlib1g-dev libexpat1-dev libxml2-dev dpkg-dev openssl patch wget bison git libewf-dev libre2-dev pkg-config python3 -y
 RUN git clone --recursive https://github.com/simsong/bulk_extractor.git
 RUN cd bulk_extractor && ./bootstrap.sh && ./configure && make 
 
