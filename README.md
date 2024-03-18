@@ -77,7 +77,7 @@ Running `docker buildx install` makes Buildx the default build client (this only
 docker buildx install
 docker build --tag deject .
 cd dir/with/malware
-docker run -v "$PWD":/work deject --include pdf_object /work/<file> <object>
+docker run -v "$PWD":/work --tty deject --include pdf_object /work/<file> <object>
 ```
 
 ## Malware Samples
