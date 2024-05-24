@@ -6,3 +6,6 @@ def test_elf_hashes():
 
 def test_elf_imports():
     assert deject.main.run("tests/data/hello","","","",["*"],["elf_imports"],"") == 0
+
+def test_elf_parser():
+    assert deject.main.run("tests/data/hello","","","",["*"],["elf_parser"],"") == 0
