@@ -21,3 +21,6 @@ def test_pe_exports():
 
 def test_pe_signatures():
     assert deject.main.run("tests/data/hello.exe","","","",["*"],["pe_signatures"],"") == 0
+
+def test_pe_parser():
+    assert deject.main.run("tests/data/hello.exe","","","",["*"],["pe_parser"],"") == 0

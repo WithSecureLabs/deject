@@ -5,7 +5,7 @@ By default runs sysinfo.
 Note: uses match/case in Python, needs Python 3.10 minimum.
 """
 from deject.plugins import Deject
-from scripts.extractors.minidump.windows_minidump import WindowsMinidump
+from scripts.extractors.kaitai.windows_minidump import WindowsMinidump
 from datetime import datetime
 from typer import secho,colors
 

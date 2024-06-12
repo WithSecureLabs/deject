@@ -40,6 +40,7 @@ chepy = "^6.1.0"
 telfhash = "^0.9.8"
 minidump = "^0.0.21"
 setuptools = "^69.5.1"
+
 [tool.poetry.dev-dependencies]
 
 [build-system]
