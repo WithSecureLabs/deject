@@ -4,7 +4,12 @@
 from pathlib import Path
 from typing import List
 import r2pipe
-import rzpipe
+
+try:
+    import rzpipe
+except OSError:
+    pass
+
 import typer
 from tabulate import tabulate
 
