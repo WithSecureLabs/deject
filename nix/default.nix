@@ -84,7 +84,6 @@ in
       exceptiongroup
       hexdump
       kaitaistruct
-      magic
       malduck
       minidump
       pdf2image
