@@ -10,8 +10,8 @@ from deject.plugins import Deject
 @Deject.plugin
 def list_bofs():
     """check for InvokeBof in the memory dump"""
-    sections = Deject.r2_handler.cmd("izzz | grep \"InvokeBof\" -C 5 | grep \"\.exe$\"")
-    sections += Deject.r2_handler.cmd("izzz | grep \"InvokeBof\" -C 5 | grep \"\.dll$\"")
+    sections = Deject.r2_handler.cmd(r"izzz | grep \"InvokeBof\" -C 5 | grep \"\.exe$\"")
+    sections += Deject.r2_handler.cmd(r"izzz | grep \"InvokeBof\" -C 5 | grep \"\.dll$\"")
     if sections is None: 
         print("InvokeBof not found in Dump. Potentially BOF free!")
         return

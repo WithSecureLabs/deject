@@ -6,6 +6,8 @@ This uses poshc2parser.py and Chepy (https://github.com/securisec/chepy).
 from deject.plugins import Deject
 from pathlib import Path
 from scripts.helpers import helpers
+import warnings
+warnings.filterwarnings("ignore", r"invalid escape sequence", category=SyntaxWarning)
 
 @Deject.plugin
 def poshc2_check():
