@@ -86,16 +86,16 @@ def run(
 
     if file_type == "pe":
         pre_include = ["pe_packed","pe_exports","pe_hashes","pe_imports","pe_sections","malwareconfigextract","poshc2_check",
-"c3_check","cobaltstrike_check","agenttesla_behaviour","list_libs","pe_hashlookup"]
+"c3_check","cobaltstrike_check","agenttesla_behaviour","list_libs","pe_hashlookup","pe_parser"]
     if file_type == "dmp":
         pre_include = ["list_exes","list_dlls","minidump_parser","inspect_mmaps","malwareconfigextract","poshc2_check",
 "c3_check","cobaltstrike_check"]
     if file_type == "dmg":
         pre_include = ["dmg_hashes","pe_hashlookup"]
     if file_type == "elf":
-        pre_include = ["pe_exports","pe_packed","elf_imports","elf_hashes","list_libs","pe_hashlookup"]
+        pre_include = ["pe_exports","pe_packed","elf_imports","elf_hashes","list_libs","pe_hashlookup","elf_parser"]
     if file_type == "macho":
-        pre_include = ["pe_exports","elf_imports","dmg_hashes","list_libs","pe_hashlookup"]
+        pre_include = ["pe_exports","elf_imports","dmg_hashes","list_libs","pe_hashlookup","macho_parser"]
     if file_type == "pdf":
         pre_include = ["pdf_modified","pdf_analytics","pdf_triage"]
     if file_type == "pcap":
