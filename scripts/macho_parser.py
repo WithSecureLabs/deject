@@ -7,65 +7,125 @@ from deject.plugins import Deject
 from kaitaistruct import KaitaiStream, BytesIO
 from scripts.extractors.kaitai.mach_o import MachO
 from typer import secho,colors
+from enum import Flag
+
+class Flags(Flag):
+    MH_NOUNDEFS = 0x1
+    MH_INCRLINK = 0x2
+    MH_DYLDLINK = 0x4
+    MH_BINDATLOAD = 0x8
+    MH_PREBOUND = 0x10
+    MH_SPLIT_SEGS = 0x20
+    MH_LAZY_INIT = 0x40
+    MH_TWOLEVEL = 0x80
+    MH_FORCE_FLAT = 0x100
+    MH_NOMULTIDEFS = 0x200
+    MH_NOFIXPREBINDING = 0x400
+    MH_PREBINDABLE  = 0x800
+    MH_ALLMODSBOUND = 0x1000
+    MH_SUBSECTIONS_VIA_SYMBOLS = 0x2000
+    MH_CANONICAL = 0x4000
+    MH_WEAK_DEFINES = 0x8000
+    MH_BINDS_TO_WEAK = 0x10000	
+    MH_ALLOW_STACK_EXECUTION = 0x20000
+    MH_ROOT_SAFE = 0x40000             
+    MH_SETUID_SAFE = 0x80000
+    MH_NO_REEXPORTED_DYLIBS = 0x100000 
+    MH_PIE = 0x200000			
+    MH_DEAD_STRIPPABLE_DYLIB = 0x400000 
+    MH_HAS_TLV_DESCRIPTORS = 0x800000
+    MH_NO_HEAP_EXECUTION = 0x1000000
+    MH_APP_EXTENSION_SAFE = 0x02000000
+    MH_NLIST_OUTOFSYNC_WITH_DYLDINFO = 0x04000000
+    MH_SIM_SUPPORT = 0x08000000
    
 
 @Deject.plugin
 def macho_parser():
     """Used to parse information from a Mach-o file"""
     data = MachO.from_file(Deject.file_path)
-    if Deject.plugin_args == "False":
+    args = str(Deject.plugin_args).split(" ")
+    match args[0]:
+        case "extract":
+            result = macho_parser_extract(data,args[1])
+        case "sections":
+            result = macho_parser_sections(data)
+        case _:
             result = macho_parser_misc(data)
-    else:
-        result = macho_parser_extract(data,Deject.plugin_args)
+           
     return result
 
 def macho_parser_misc(data):
     """Parses information from a Mach-o file, such as Entrypoint and Sections"""
     rows = []
-    dylibs = []
-    rows.append(["magic",data.magic])
-    rows.append(["architecture",data.header.cputype])
-    rows.append(["file type",data.header.filetype])
-    rows.append(["flags",hex(data.header.flags)])
-    rows.append(["number of load commands",data.header.ncmds])
-    rows.append(["size of load commands",data.header.sizeofcmds])
-    for command in data.load_commands:
-        if isinstance(command.body,data.EntryPointCommand):
-            rows.append(["entrypoint offset",command.body.entry_off])
-            rows.append(["stack size",command.body.stack_size])
-        if isinstance(command.body,data.DylibCommand):
-            dylibs.append(command.body.name)
-        if isinstance(command.body,data.SegmentCommand64):
-            for section in command.body.sections:
-                rows.append(["section name",section.sect_name])
-                rows.append(["segment name",section.seg_name])
-                rows.append(["size",section.size])
-                rows.append(["address",hex(section.addr)])
-    rows.append(["dylib commands", '\n'.join(dylibs)])
+    rows.append(["Magic",data.magic])
+    rows.append(["Architecture",data.header.cputype])
+    rows.append(["File Type",data.header.filetype])
+    rows.append(["Flags (raw)",hex(data.header.flags)])
+    flags = macho_parser_flags_lookup(data.header.flags)
+    rows.append(["Flags", "\n".join(flags)])
+    rows.append(["Number of Load Commands",data.header.ncmds])
+    rows.append(["Size of Load Commands",data.header.sizeofcmds])
     t = {"header": ["Key","Value"], "rows": rows}
     return t
 
-def macho_parser_extract(data,args):
-    """Extracts sections from a Mach-o file"""
-    args = str(Deject.plugin_args).split(" ")
+def macho_parser_sections(data):
+    rows = []
+    dylibs = []
     for command in data.load_commands:
+        if isinstance(command.body,data.DylinkerCommand):
+            rows.append(["Dylinker Command",command.body.name.value])
+        if isinstance(command.body,data.EntryPointCommand):
+            rows.append(["Section Type",command.type.name])
+            rows.append(["Entrypoint Offset",command.body.entry_off])
+            rows.append(["Stack Size",command.body.stack_size])
+        if isinstance(command.body,data.DylibCommand):
+            rows.append(["Section Type",command.type.name])
+            dylibs.append(command.body.name)
         if isinstance(command.body,data.SegmentCommand64):
             for section in command.body.sections:
-                if section.sect_name == args[0]  or section.name == f"__{args[0]}":
-                    if isinstance(section.data,data.SegmentCommand64.Section64.StringList):
-                        secho(section.data.strings)
-                        return
-                    if isinstance(section.data,data.SegmentCommand64.Section64.PointerList):
-                        secho(section.data.items)
-                        return
-                    secho(section.data)
+                rows.append(["Section Type",command.type.name])
+                rows.append(["Section Name",section.sect_name])
+                rows.append(["Segment Name",section.seg_name])
+                rows.append(["Size",section.size])
+                rows.append(["Address",hex(section.addr)])
+    rows.append(["Dylib Commands", '\n'.join(dylibs)])
+    t = {"header": ["Key","Value"], "rows": rows}
+    return t
+
+def macho_parser_flags_lookup(data):
+    flags = []
+    for i in [e.value for e in Flags]:
+        try:
+            if data&i > 0:
+                flags.append(Flags(data&i).name)
+        except ValueError:
+            continue
+    return flags
+
+def macho_parser_extract(data,args):
+    """Extracts sections from a Mach-o file"""
+    try:
+        for command in data.load_commands:
+            if isinstance(command.body,data.SegmentCommand64):
+                for section in command.body.sections:
+                    if section.sect_name == args  or section.sect_name == f"__{args}":
+                        if isinstance(section.data,data.SegmentCommand64.Section64.StringList):
+                            secho(section.data.strings)
+                            return
+                        if isinstance(section.data,data.SegmentCommand64.Section64.PointerList):
+                            secho(section.data.items)
+                            return
+                        secho(section.data)
+    except UnicodeDecodeError:
+        secho(f"Could not decode data for section {args}!",fg=colors.RED)
 
 def help():
     print("""
 Mach-o Parser plugin
 
-SYNOPSIS <filename> [section name]
+SYNOPSIS <filename> "[options]"
 
 Uses the Mach-o parser from Kaitai to read information from a Mach-o file.
-If a section name is added, extract data from that section.
+If extract and a section name is added, extract data from that section (enclose additional options in quotes).
 """)
