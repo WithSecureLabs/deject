@@ -36,6 +36,8 @@ def elf_parser():
                 result = elf_parser_extract(data,args[1])
             case "sections":
                 result = elf_parser_sections(data)
+            case "headers":
+                result = elf_parser_program_headers(data)
             case _:
                 result = elf_parser_misc(data)
     return result
@@ -52,13 +54,16 @@ def elf_parser_misc(data):
     return t
 
 def elf_parser_sections(data):
+    """Extract Section Header information"""
     rows = []
     for section in data.header.section_headers:
         perms = ""
         rows.append(["Section Name",section.name])
         rows.append(["Section Type",section.type])
         rows.append(["Entry Size",section.entry_size])
-        rows.append(["Section Size",section.addr])
+        rows.append(["Section Address",hex(section.addr)])
+        if section.linked_section:
+            rows.append(["Linked Sections",section.linked_section.name])
         rows.append(["TLS",section.flags_obj.tls])
         flags = elf_parser_flag_lookup(section.flags)
         rows.append(["Flags","\n".join(flags)])
@@ -70,6 +75,27 @@ def elf_parser_sections(data):
             rows.append(["Permissions",perms])
         rows.append(["Allocated",section.flags_obj.alloc])
         rows.append(["Strings",section.flags_obj.strings])
+    t = {"header": ["Key","Value"], "rows": rows}
+    return t
+
+def elf_parser_program_headers(data):
+    """Extract Program Header information"""
+    rows = []
+    for header in data.header.program_headers:
+        perms = ""
+        rows.append(["Header Type",header.type])
+        rows.append(["Header Address",hex(header.vaddr)])
+        rows.append(["Header Filesz",hex(header.filesz)])
+        rows.append(["Header Memsz",hex(header.memsz)])
+        rows.append(["Flags",header.flags_obj.value])
+        if header.flags_obj.read:
+            perms += "R"
+        if header.flags_obj.write:
+            perms += "W"
+        if header.flags_obj.execute:
+            perms += "X"
+        if perms != "":
+            rows.append(["Permissions",perms])
     t = {"header": ["Key","Value"], "rows": rows}
     return t
 

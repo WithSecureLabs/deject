@@ -38,6 +38,12 @@ class Flags(Flag):
     MH_APP_EXTENSION_SAFE = 0x02000000
     MH_NLIST_OUTOFSYNC_WITH_DYLDINFO = 0x04000000
     MH_SIM_SUPPORT = 0x08000000
+
+class SegFlags(Flag):
+    SG_HIGHVM = 0x1
+    SG_FVMLIB = 0x2
+    SG_NORELOC = 0x4
+    SG_PROTECTED_VERSION_1 = 0x8
    
 
 @Deject.plugin
@@ -84,6 +90,8 @@ def macho_parser_sections(data):
             dylibs.append(command.body.name)
         if isinstance(command.body,data.SegmentCommand64):
             for section in command.body.sections:
+                rows.append(["Flags (raw)",section.flags])
+                rows.append(["Flags","\n".join(macho_parser_seg_flags_lookup(section.flags))])
                 rows.append(["Section Type",command.type.name])
                 rows.append(["Section Name",section.sect_name])
                 rows.append(["Segment Name",section.seg_name])
@@ -99,6 +107,16 @@ def macho_parser_flags_lookup(data):
         try:
             if data&i > 0:
                 flags.append(Flags(data&i).name)
+        except ValueError:
+            continue
+    return flags
+
+def macho_parser_seg_flags_lookup(data):
+    flags = []
+    for i in [e.value for e in SegFlags]:
+        try:
+            if data&i > 0:
+                flags.append(SegFlags(data&i).name)
         except ValueError:
             continue
     return flags
