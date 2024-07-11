@@ -145,6 +145,7 @@ def run(
 
 @app.command()
 def help(plugin: str = typer.Argument(...)):
+    """Show plugin help"""
     if plugin in scripts.names():
         imported = getattr(__import__("scripts", fromlist=[plugin]), plugin)
         try: 
