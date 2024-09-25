@@ -6,11 +6,11 @@
 }:
 buildPythonPackage {
   pname = "chepy";
-  version = "6.5.0";
+  version = "7.2.0";
 
   src = fetchurl {
-    url = "https://files.pythonhosted.org/packages/fb/11/2710f6b1ee502126546b93ebfc6774aae09402c3ce810268c9d780d9673e/chepy-6.5.0.tar.gz";
-    hash = "sha256-v7JxnpH9zi3lFu1bbIeUrsCL984ybpv6tqMQsMKyXPU=";
+    url = "https://files.pythonhosted.org/packages/cb/34/64261d7284e8e488bedad78e34f4ccaa95c990ddb8c2890e5363a41ba237/chepy-7.2.0.tar.gz";
+    hash = "sha256-f/mvLyO+fm7ge5gCBuJpbfC+TDSCuSbTuvevHqC+Bbg=";
   };
 
   doCheck = false;

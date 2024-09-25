@@ -14,8 +14,14 @@ final: prev: {
 
           minidump = python-prev.minidump.overrideAttrs (self: super: {
             src = final.fetchurl {
-              url = "https://files.pythonhosted.org/packages/47/88/6d085c3976f179fb90dbab30ed56c72df901ceb727d4b99bf858dba5f089/minidump-0.0.21.tar.gz";
-              hash = "sha256-g9YSr7bFdyfr84rKQztVD4P5+MfDtlYq0quXBx/YXzo=";
+              url = "https://files.pythonhosted.org/packages/26/4b/bc695b99dc7d77d28223765c3ee5a31d34fd2850c52eb683ccdd1206067d/minidump-0.0.24.tar.gz";
+              hash = "sha256-964JuUTzsXzPXOzGb5/1p6RbBTR0oTrrAS9MkgRHBDc=";
+            };
+          });
+          m2crypto = python-prev.m2crypto.overrideAttrs (self: super: {
+            src = final.fetchurl {
+              url = "https://files.pythonhosted.org/packages/85/9f/b8977ce2971cf5f823db3fdb31e7e061b9662da318a17b6bf0c653f84aee/m2crypto-0.42.0.tar.gz";
+              hash = "sha256-QrYt8sr2IxYbHWQ6cjVGTC/ioxBQSevEmKbUfcCPZLQ=";
             };
           });
         }
