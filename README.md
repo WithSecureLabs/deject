@@ -54,13 +54,13 @@ This project contains `flake.nix` file, which means that following outputs can b
 `devShell` is, as the name suggest, dev-friendly environment, with all the required dependencies, to build and continue development of this project.
 This also creates a 'temporary' shell, with the built package provided, added to that given devShell PATH. 
 
-### binary output
-
 In order to do that, run the following in Deject's root dir:
 
 `nix develop`
 
 > no other information is required, as there's only one devShell associated with this flake
+
+### binary output
 
 If you want to build a binary of this project, using Nix, run the following inside Deject's root dir:
 
