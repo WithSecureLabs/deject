@@ -26,6 +26,7 @@
   telfhash,
   typer,
   yara-python,
+  # setuptools,
   # from overlay
   chepy,
   dotnetfile,
@@ -97,6 +98,7 @@ in
       typer
       yara-python
       pyyaml
+      # setuptools
 
       chepy
       dotnetfile

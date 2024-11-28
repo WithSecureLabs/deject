@@ -36,6 +36,40 @@ This should install the Python dependencies and create a new virtual environment
 Run Deject by typing the following command in the Deject directory:
 `poetry run deject`
 
+## Building with Nix
+
+This project contains `flake.nix` file, which means that following outputs can be produced:
+```
+├───devShells
+│   └───x86_64-linux
+│       └───default: development environment 'nix-shell'
+└───packages
+    └───x86_64-linux
+        ├───default: package 'python3.11-deject-0.4.0'
+        └───deject: package 'python3.11-deject-0.4.0'
+```
+
+### devShell
+
+`devShell` is, as the name suggest, dev-friendly environment, with all the required dependencies, to build and continue development of this project.
+This also creates a 'temporary' shell, with the built package provided, added to that given devShell PATH. 
+
+In order to do that, run the following in Deject's root dir:
+
+`nix develop`
+
+> no other information is required, as there's only one devShell associated with this flake
+
+### binary output
+
+If you want to build a binary of this project, using Nix, run the following inside Deject's root dir:
+
+`nix build`
+
+> no other information is required in this case neither, as both outputs for 'packages' are identical, as seen in the output of `nix flake show` above
+
+This will create a directory `result`, and the deject binary will be located under `./result/bin/deject`.
+
 ## Tests
 To run the tests, to check that Deject is working correct, use the following command in the Deject directory:
 
