@@ -1,4 +1,4 @@
-.PHONY: all default arm64 amd64 poetry flake
+.PHONY: all default arm64 amd64 poetry flake install-deps
 
 default:
 	sudo docker build -t deject .
@@ -18,6 +18,9 @@ multi:
 
 poetry:
 	poetry install --compile
+
+install-deps:
+	sudo apt install git curl build-essential libffi-dev python3 python3-dev python3-pip libtool libssl-dev swig libfuzzy-dev libewf-dev libexpat1 openssl
 
 flake:
 	sudo nix build .
