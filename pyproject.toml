@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "deject"
-version = "0.4.3"
+version = "0.4.4"
 description = "A reverse engineering toolbox"
 authors = ["Aubrey Thomas <aubrey.thomas@withsecure.com>"]
 license = "GPL-3.0-only"
