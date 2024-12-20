@@ -81,7 +81,6 @@ def macho_parser_sections(data):
     rows = []
     dylibs = []
     for command in data.load_commands:
-        print(type(command.body))
         if isinstance(command.body,data.DylinkerCommand):
             rows.append(["Dylinker Command",command.body.name.value])
         if isinstance(command.body,data.EntryPointCommand):
