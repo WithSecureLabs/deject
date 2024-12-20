@@ -38,12 +38,14 @@ class Flags(Flag):
     MH_APP_EXTENSION_SAFE = 0x02000000
     MH_NLIST_OUTOFSYNC_WITH_DYLDINFO = 0x04000000
     MH_SIM_SUPPORT = 0x08000000
+    MH_DYLIB_IN_CACHE = 0x80000000
 
 class SegFlags(Flag):
     SG_HIGHVM = 0x1
     SG_FVMLIB = 0x2
     SG_NORELOC = 0x4
     SG_PROTECTED_VERSION_1 = 0x8
+    SG_READ_ONLY = 0x10
    
 
 @Deject.plugin
@@ -79,6 +81,7 @@ def macho_parser_sections(data):
     rows = []
     dylibs = []
     for command in data.load_commands:
+        print(type(command.body))
         if isinstance(command.body,data.DylinkerCommand):
             rows.append(["Dylinker Command",command.body.name.value])
         if isinstance(command.body,data.EntryPointCommand):
@@ -90,8 +93,17 @@ def macho_parser_sections(data):
             dylibs.append(command.body.name)
         if isinstance(command.body,data.SegmentCommand64):
             for section in command.body.sections:
-                rows.append(["Flags (raw)",section.flags])
-                rows.append(["Flags","\n".join(macho_parser_seg_flags_lookup(section.flags))])
+                rows.append(["Section Flags (raw)",hex(section.flags)])
+                rows.append(["Section Flags","\n".join(macho_parser_seg_flags_lookup(section.flags))])
+                rows.append(["Section Type",command.type.name])
+                rows.append(["Section Name",section.sect_name])
+                rows.append(["Segment Name",section.seg_name])
+                rows.append(["Size",section.size])
+                rows.append(["Address",hex(section.addr)])
+        if isinstance(command.body,data.SegmentCommand):
+            for section in command.body.sections:
+                rows.append(["Section Flags (raw)",hex(section.flags)])
+                rows.append(["Section Flags","\n".join(macho_parser_seg_flags_lookup(section.flags))])
                 rows.append(["Section Type",command.type.name])
                 rows.append(["Section Name",section.sect_name])
                 rows.append(["Segment Name",section.seg_name])
