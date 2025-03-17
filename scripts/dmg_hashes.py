@@ -6,7 +6,7 @@ import tlsh
 
 
 @Deject.plugin
-def elf_hashes():
+def dmg_hashes():
     """Print TLSH hash of a DMG file"""
     with open(Deject.file_path, "rb") as f:
         data = f.read()
