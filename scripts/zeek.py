@@ -9,7 +9,8 @@ Download Zeek and link or copy the binary to bin/ in Deject's root directory.
 """
 from deject.plugins import Deject
 import os
-from scripts.helpers import helpers,Settings
+from scripts.helpers import helpers, Settings
+
 
 @Deject.plugin
 def zeek():
@@ -25,10 +26,11 @@ def zeek():
     process = [zeek, "-r", filename, f"Log::default_logdir={filepath}"]
     args = Deject.plugin_args
     if args == "False":
-        helpers.bin_exec(helpers,process)
+        helpers.bin_exec(helpers, process)
     else:
-        helpers.bin_exec(helpers,process + args.strip().split(" "))
-    print(f"[+] Zeek output for {filename} has been saved to {filepath}")
+        helpers.bin_exec(helpers, process + args.strip().split(" "))
+    return f"[+] Zeek output for {filename} has been saved to {filepath}"
+
 
 def help():
     print("""

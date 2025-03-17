@@ -4,11 +4,11 @@
 
 from pathlib import Path
 from deject.plugins import Deject
-from scripts.helpers import helpers,Settings
-from typer import secho,colors
+from scripts.helpers import helpers, Settings
 import os
 
 rules_path = Path("./scripts/yara-rules/yara/rules")
+
 
 @Deject.plugin
 def run_yara():
@@ -25,16 +25,13 @@ def run_yara():
             try:
                 match = helpers.yara_exec(helpers, rule, Deject.file_path)
             except:
-                secho(f"Error in rule {rule}", fg=colors.RED)
+                raise Exception(f"Error in rule {rule}")
             if len(match) > 0:
                 matches.append(match)
 
     if len(matches) != 0:
-        secho("The following yara rules matched:", fg=colors.GREEN)
-        for match in matches:
-            secho(match, fg=colors.GREEN)
-    else:
-        secho("No matching rules!", fg=colors.RED)
+        return matches
+
 
 def help():
     print("""
@@ -42,6 +39,6 @@ Yara Scan plugin
 SYNOPSIS <filename>
 Run Yara Python on a file. By default this uses rules located in the yara-rules directory.
 To change the rules used during the scan, set the RULES environment variable to where the
-.yar files reside. 
+.yar files reside.
 This plugin has no additional arguments.
 """)

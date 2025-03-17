@@ -4,11 +4,9 @@
 By default runs macho_parser_misc() from macho_parser plugin
 """
 from deject.plugins import Deject
-from kaitaistruct import KaitaiStream, BytesIO
 from scripts.extractors.kaitai.mach_o_fat import MachOFat
 import scripts.macho_parser
-from typer import secho,colors
-from enum import Flag
+
 
 @Deject.plugin
 def macho_fat_parser():
@@ -16,19 +14,25 @@ def macho_fat_parser():
     data = MachOFat.from_file(Deject.file_path)
     args = str(Deject.plugin_args).split(" ")
     if args[0] == "False":
-        secho(f"Please select a CPU Arch from the following: {[x.cpu_type.name for x in data.fat_archs]})")
-        return
+        return f"Please select a CPU Arch from the following: {[x.cpu_type.name for x in data.fat_archs]})"
     args.append("")
     for archs in data.fat_archs:
         if archs.cpu_type.name == args[0]:
             match args[1]:
                 case "extract":
-                    result = scripts.macho_parser.macho_parser_extract(archs.object,args[2])
+                    result = scripts.macho_parser.macho_parser_extract(
+                        archs.object, args[2],
+                    )
                 case "sections":
-                    result = scripts.macho_parser.macho_parser_sections(archs.object)
+                    result = scripts.macho_parser.macho_parser_sections(
+                        archs.object,
+                    )
                 case _:
-                    result = scripts.macho_parser.macho_parser_misc(archs.object)
+                    result = scripts.macho_parser.macho_parser_misc(
+                        archs.object,
+                    )
     return result
+
 
 def help():
     print("""

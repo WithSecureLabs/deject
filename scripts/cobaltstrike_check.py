@@ -9,10 +9,21 @@ from scripts.helpers import helpers
 @Deject.plugin
 def cobaltstrike_check():
     """Check if the dump corresponds to a cs injected one and extract the config"""
-    process = ["python",Path("./scripts/extractors/cobaltstrike/1768.py")]
+    process = ["python", Path("./scripts/extractors/cobaltstrike/1768.py")]
     filename = [Deject.file_path]
     arg = Deject.plugin_args
     if arg == "False":
-        helpers.bin_exec(helpers,process + filename)
+        helpers.bin_exec(helpers, process + filename)
     else:
-        helpers.bin_exec(helpers,process + arg.strip().split(" ") + filename)
+        helpers.bin_exec(helpers, process + arg.strip().split(" ") + filename)
+
+
+def help():
+    print("""
+Cobalt Strike Check Plugin
+
+SYNOPSIS <filename>
+
+Uses 1768.py (https://github.com/DidierStevens/DidierStevensSuite/blob/master/1768.py) to extract
+configuration from a Cobalt Strike payload.
+""")
