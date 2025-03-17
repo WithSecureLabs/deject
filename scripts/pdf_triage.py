@@ -1,5 +1,5 @@
 """!
-@brief Runs PDFiD on a PDF file with the triage plugin. Arguments are [plugin].
+@brief Runs PDFiD on a PDF file with the triage plugin.
 """
 from deject.plugins import Deject
 from pathlib import Path
@@ -8,7 +8,7 @@ from scripts.helpers import helpers
 
 @Deject.plugin
 def pdf_image():
-    """Runs PDFiD on a PDF file with the triage plugin. Arguments are [plugin]."""
+    """Runs PDFiD on a PDF file with the triage plugin."""
     script = Path("./scripts/pdf-tools/pdfid.py")
     filename = Deject.file_path
     if Deject.plugin_args == "False":
@@ -20,14 +20,17 @@ def pdf_image():
         )
     else:
         args = str(Deject.plugin_args)
-        helpers.bin_exec(helpers, ["python", script, '-p', args, filename])
+        helpers.bin_exec(
+            helpers,
+            ["python", script] + args.strip().split(" ") + [filename],
+        )
     return
 
 
 def help():
     print("""
 PDF Triage plugin
-SYNOPSIS <file> [pdfid plugin]
-Uses PDFiD with triage plugin (default)
-or runs the named plugin(s) (Separate with comma ',').
+SYNOPSIS <file> [arguments]
+Uses PDFiD with triage plugin (default). Additional arguments can be passed to PDFiD or additional plugins can be used.
+Place additional plugins in ./scripts/pdf-tools/.
 """)
