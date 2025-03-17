@@ -7,6 +7,7 @@ from pathlib import Path
 from scripts.helpers import helpers
 from sys import exit
 
+
 @Deject.plugin
 def c3_check():
     """Check if the dump corresponds to a F-Secure C3 injected one and extract the config"""
@@ -14,7 +15,7 @@ def c3_check():
     filename = Deject.file_path
     args = "-f"
     # let's look for yara rules in the config dir
-    rules,scripts = helpers.get_rules(helpers, config_dir)
+    rules, scripts = helpers.get_rules(helpers, config_dir)
     if len(scripts) == 0:
         print("[Error!] Unable to find parsing script")
         exit(1)
@@ -22,6 +23,7 @@ def c3_check():
     for script in scripts:
         helpers.script_exec(helpers, script, filename, args)
     return
+
 
 def help():
     print("""

@@ -2,24 +2,26 @@
 @brief Uses radare/rizin to extract imports for a PE file.
 """
 from deject.plugins import Deject
-from typer import secho,colors
+from typer import secho, colors
+
 
 @Deject.plugin
 def pe_imports():
     """List imports in a PE file."""
     imports = Deject.r2_handler.cmdj("iij")
-    if imports is None: 
+    if imports is None:
         secho("No imports detected in the file, this might be a bug!", fg=colors.RED)
         return
     rows = []
     for imp in imports:
         try:
-            rows.append([imp["name"],imp["libname"]])
+            rows.append([imp["name"], imp["libname"]])
         except:
             rows.append([imp["name"]])
-    res = {"header": ["Name","Library"], "rows": rows}
+    res = {"header": ["Name", "Library"], "rows": rows}
 
     return res
+
 
 def help():
     print("""

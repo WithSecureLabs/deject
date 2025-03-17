@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "deject"
-version = "0.4.4"
+version = "0.5.0"
 description = "A reverse engineering toolbox"
 authors = ["Aubrey Thomas <aubrey.thomas@withsecure.com>"]
 license = "GPL-3.0-only"
@@ -20,13 +20,12 @@ tabulate = "^0.9.0"
 yara-python = "^4.0.2"
 netstruct = "^1.1.2"
 ssdeep = "^3.4"
-M2Crypto = "^0.42.0"
 requests = "^2.27.1"
 pefile = "^2024.8.26"
 malduck = "^4.3.0"
 pycryptodome = "^3.14.1"
 mwcp = "^3.5.0"
-typer = "^0.12.0"
+typer = "^0.15.1"
 exceptiongroup = "^1.0.0-rc.7"
 libmagic = "^1.0"
 python-magic = "^0.4.26"
@@ -36,12 +35,13 @@ hexdump = "^3.3"
 dotnetfile = {git = "https://github.com/pan-unit42/dotnetfile.git"}
 kaitaistruct = "^0.10"
 pdf2image = "^1.16.3"
-chepy = "^7.0.0"
+chepy = "^7.2.0"
 telfhash = "^0.9.8"
 minidump = "^0.0.24"
 setuptools = "^75.0.0"
-
-[tool.poetry.dev-dependencies]
+olefile = "^0.47"
+oletools = "^0.60.2"
+pre-commit = "^4.1.0"
 
 [build-system]
 requires = ["poetry-core"]

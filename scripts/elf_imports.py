@@ -2,13 +2,14 @@
 @brief Uses radare/rizin to extract imports for an ELF file.
 """
 from deject.plugins import Deject
-from typer import secho,colors
+from typer import secho, colors
+
 
 @Deject.plugin
 def pe_imports():
     """List imports in an ELF file."""
     imports = Deject.r2_handler.cmdj("iij")
-    if imports is None: 
+    if imports is None:
         secho("No imports detected in the file, this might be a bug!", fg=colors.RED)
         return
     rows = []
@@ -17,6 +18,7 @@ def pe_imports():
     res = {"header": ["Name"], "rows": rows}
 
     return res
+
 
 def help():
     print("""

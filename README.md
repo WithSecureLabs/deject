@@ -28,7 +28,7 @@ Clone the repository with GIT using the following command:
 
 `git clone --recurse-submodules https://github.com/WithSecureLabs/deject.git`
 
-In the deject folder run: 
+In the deject folder run:
 
 `poetry install`
 
@@ -52,7 +52,7 @@ This project contains `flake.nix` file, which means that following outputs can b
 ### devShell
 
 `devShell` is, as the name suggest, dev-friendly environment, with all the required dependencies, to build and continue development of this project.
-This also creates a 'temporary' shell, with the built package provided, added to that given devShell PATH. 
+This also creates a 'temporary' shell, with the built package provided, added to that given devShell PATH.
 
 In order to do that, run the following in Deject's root dir:
 
@@ -83,13 +83,13 @@ If the above command fails on the M2Crypto Python package, install the following
 ## Zeek Install
 Install Zeek from via a package manager (https://docs.zeek.org/en/master/install.html) or from source (https://github.com/zeek/zeek).
 Run `ln -s /path/to/zeek bin/zeek` to link the Zeek binary in the `bin` directory for the Zeek plugin to find it.
-This is only needed if you want to run the Zeek plugin to analyse pcap files. 
+This is only needed if you want to run the Zeek plugin to analyse pcap files.
 
 ## Basic Usage
 
 To list the available plugins: `poetry run deject plugins`
 
-In the deject folder run `poetry run deject run <path to memory dump>` 
+In the deject folder run `poetry run deject run <path to memory dump>`
 
 To run only a single plugin use the `--include <plugin name>` option.
 
@@ -102,7 +102,7 @@ To provide an argument starting with a `-` or more than one argument to the appl
 * `--include pe_sections <path to exe> "carve .text"`
 
 ## Dockerfile
-To provide a unified environment a Dockerfile is provided. 
+To provide a unified environment a Dockerfile is provided.
 
 Buildx is the suggested client, install buildx from https://docs.docker.com/build/install-buildx/ (documentation: https://github.com/docker/buildx#linux-packages). (On Debian run `apt-get install docker-buildx-plugin`)
 Running `docker buildx install` makes Buildx the default build client (this only needs to be done once.)
@@ -154,12 +154,12 @@ set BULK_PATH=</path/to/bulk_extractor>
 ```
 You will need to install Bulk Extractor separately.
 
-## Useful Links 
+## Useful Links
 
 * https://www.forrest-orr.net/post/masking-malicious-memory-artifacts-part-ii-insights-from-moneta
 * https://github.com/jstrosch/malware-samples
 
-## Acknowledgements 
+## Acknowledgements
 * [Didier StevenS](https://github.com/DidierStevens/DidierStevensSuite) (1768.py and pdftool/pdfid/pdf-parser)
 * [Chepy](https://github.com/securisec/chepy)
 * [mwcfg-modules](https://github.com/c3rb3ru5d3d53c/mwcfg-modules/tree/master)

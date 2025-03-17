@@ -7,7 +7,10 @@ from deject.plugins import Deject
 from pathlib import Path
 from scripts.helpers import helpers
 import warnings
-warnings.filterwarnings("ignore", r"invalid escape sequence", category=SyntaxWarning)
+warnings.filterwarnings(
+    "ignore", r"invalid escape sequence", category=SyntaxWarning,
+)
+
 
 @Deject.plugin
 def poshc2_check():
@@ -16,6 +19,7 @@ def poshc2_check():
     filename = Deject.file_path
     arg = "-f"
     helpers.script_exec(helpers, script, filename, arg)
+
 
 def help():
     print("""

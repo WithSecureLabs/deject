@@ -3,6 +3,7 @@
 """
 from deject.plugins import Deject
 
+
 @Deject.plugin
 def lis_libs():
     """List libraries from a PE file or memory dump"""
@@ -13,11 +14,12 @@ def lis_libs():
 
     return results
 
+
 def help():
     print("""
 List Libraries plugin
 
 SYNOPSIS <filename>
-          
+
 This plugin is used to list libraries in a PE file or memory dump by running Radare/Rizin with the 'ilj' command.
 """)

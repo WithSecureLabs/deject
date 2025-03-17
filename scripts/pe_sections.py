@@ -9,10 +9,14 @@ from deject.plugins import Deject
 import ssdeep
 import binascii
 import os
-from typer import secho,colors
+from typer import secho, colors
 
-## list of normal sections
-NORMALSEC = [".text",".pdata",".rsrc",".reloc",".data",".rdata",".bss",".sbss",".sdata",".sxdata",".tls",".xdata",".vsdata"]
+# list of normal sections
+NORMALSEC = [
+    ".text", ".pdata", ".rsrc", ".reloc", ".data", ".rdata",
+    ".bss", ".sbss", ".sdata", ".sxdata", ".tls", ".xdata", ".vsdata",
+]
+
 
 @Deject.plugin
 def pe_sections():
@@ -20,28 +24,41 @@ def pe_sections():
 Use "carve <sectionname>" to carve a section to disk."""
     rows = []
     sections = Deject.r2_handler.cmdj("iSj")
-    args =  Deject.plugin_args.split(" ")
+    args = Deject.plugin_args.split(" ")
     if args[0] == "carve":
         for sec in sections:
             if sec['name'] == args[1]:
-                content = Deject.r2_handler.cmd("p8 {} @ {}".format(sec['size'], sec['vaddr']))
+                content = Deject.r2_handler.cmd(
+                    "p8 {} @ {}".format(sec['size'], sec['vaddr']),
+                )
                 sshash = ssdeep.hash(binascii.unhexlify(content.strip()))
                 filepath = os.path.dirname(Deject.file_path)
                 f = open(filepath + "/" + sec["name"], "wb")
                 f.write(binascii.unhexlify(content.strip()))
                 f.close()
-                secho(f"[+] Saved section {sec['name']} to {filepath}",fg=colors.GREEN)
-                rows.append([sec['name'], hex(sec['vaddr']), hex(sec['vsize']), sshash])
+                secho(
+                    f"[+] Saved section {sec['name']} to {filepath}", fg=colors.GREEN,
+                )
+                rows.append([
+                    sec['name'], hex(sec['vaddr']),
+                    hex(sec['vsize']), sshash,
+                ])
     else:
         for sec in sections:
             if Deject.quiet:
                 if sec['name'] in NORMALSEC:
                     continue
-            content = Deject.r2_handler.cmd("p8 {} @ {}".format(sec['size'], sec['vaddr']))
+            content = Deject.r2_handler.cmd(
+                "p8 {} @ {}".format(sec['size'], sec['vaddr']),
+            )
             sshash = ssdeep.hash(binascii.unhexlify(content.strip()))
-            rows.append([sec['name'], hex(sec['vaddr']), hex(sec['vsize']), sshash])        
-    res = {"header":["Name", "vaddr", "size", "ssdeep"], "rows": rows}
+            rows.append([
+                sec['name'], hex(sec['vaddr']),
+                hex(sec['vsize']), sshash,
+            ])
+    res = {"header": ["Name", "vaddr", "size", "ssdeep"], "rows": rows}
     return res
+
 
 def help():
     print("""

@@ -5,11 +5,12 @@ VT_KEY environment variable set."""
 from deject.plugins import Deject
 import scripts.helpers as utils
 import hashlib
-from typer import secho,colors
+from typer import secho, colors
 
 
-## Data to extract from the SMTP fields
+# Data to extract from the SMTP fields
 INTERESTING_SMTP_DATA = ['smtp_from', 'smtp_to', 'subject']
+
 
 @Deject.plugin
 def agenttesla():
@@ -20,7 +21,8 @@ def agenttesla():
     sha256 = hashlib.sha256(data).hexdigest()
     sha1 = hashlib.sha1(data).hexdigest()
     secho(f"SHA1: {sha1}")
-    extract_interesting_information(sha256,filename)
+    extract_interesting_information(sha256, filename)
+
 
 def extract_interesting_information(hash, filename):
     """Retrieves Virus Total sandbox information for a given file."""
@@ -41,7 +43,7 @@ def extract_interesting_information(hash, filename):
             if attributes := sandbox.get('attributes'):
                 if services := attributes.get('services_started'):
                     services_started.extend(services)
-                    
+
                 if smtp_conversations := attributes.get('smtp_conversations'):
                     for conversation in smtp_conversations:
                         c2_conversation = {}
@@ -60,7 +62,7 @@ def extract_interesting_information(hash, filename):
                             c2_conversation['data'] = {
                                 'url': conversation['url'],
                                 'request_method': conversation['request_method'],
-                                'status_code': conversation['response_status_code']
+                                'status_code': conversation['response_status_code'],
                             }
                         else:
                             c2_conversation['data'] = {
@@ -71,10 +73,10 @@ def extract_interesting_information(hash, filename):
                 if ip_traffic := attributes.get('ip_traffic'):
                     for ip in ip_traffic:
                         c2_conversation = {}
-                        c2_conversation['c2_type'] = ip['transport_layer_protocol']                
+                        c2_conversation['c2_type'] = ip['transport_layer_protocol']
                         c2_conversation['data'] = {
-                                'destination': ip['destination_ip'],
-                                'port': ip['destination_port']
+                            'destination': ip['destination_ip'],
+                            'port': ip['destination_port'],
                         }
                         c2s.append(c2_conversation)
 
@@ -97,10 +99,11 @@ def extract_interesting_information(hash, filename):
             result['services_started'] = set(services_started)
 
         if result:
-            secho(result,fg=colors.GREEN)
+            secho(result, fg=colors.GREEN)
         # parsing failed
-        else: 
+        else:
             secho(f"No information found for {filename}", fg=colors.RED)
+
 
 def help():
     print("""

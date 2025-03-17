@@ -5,13 +5,15 @@ from deject.plugins import Deject
 from pathlib import Path
 from scripts.helpers import helpers
 
+
 @Deject.plugin
 def pdf_analytics():
     """Use pdf-parser to search keywords, this uses "-a -O"."""
     script = Path("./scripts/pdf-tools/pdf-parser.py")
     filename = Deject.file_path
-    helpers.bin_exec(helpers,["python", script, "-a", "-O", filename])
+    helpers.bin_exec(helpers, ["python", script, "-a", "-O", filename])
     return
+
 
 def help():
     print("""

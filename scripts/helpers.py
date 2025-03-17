@@ -1,8 +1,9 @@
 """!
 @brief This file contains helper classes and functions.
 @details If a function is used for multiple plugins, it
-might be best to add it here for easier maintenance. 
+might be best to add it here for easier maintenance.
 """
+
 
 class helpers:
     """!
@@ -38,7 +39,7 @@ class helpers:
             self.subprocess.call(["python3", script, arg, filename])
         else:
             self.subprocess.call(["python3", script, filename])
-    
+
     def bin_exec(self, process):
         """! @brief run a program on a file
         @details runs subprocess.call(process) after building the process list in the plugin
@@ -75,11 +76,15 @@ class Settings:
 
         with open(self.settings_file, "r") as ymlfile:
             try:
-                configuration = self.yaml.load(ymlfile, Loader=self.yaml.FullLoader)
+                configuration = self.yaml.load(
+                    ymlfile, Loader=self.yaml.FullLoader,
+                )
                 for item, conf in configuration.items():
                     self.cfg[item] = conf
             except IOError:
-                self.logger.error("Could not open {0}".format(self.settings_file))
+                self.logger.error(
+                    f"Could not open {self.settings_file}",
+                )
                 self.sys.exit(1)
 
         for key in self.cfg["env_variables"]:
@@ -100,8 +105,11 @@ class Settings:
         try:
             return self._envvariables[varname]
         except KeyError:
-            self.logger.error("Env Variable does not exist: {0}".format(varname))
+            self.logger.error(
+                f"Env Variable does not exist: {varname}",
+            )
             return None
+
 
 class virustotal:
     """!
@@ -127,9 +135,7 @@ class virustotal:
         )
         if str(behavior_lookup.status_code) != "200":
             self.logger.error(
-                "VT API Behaviour lookup Status code was non-200: {0}".format(
-                    behavior_lookup.status_code, behavior_lookup.reason
-                ),
+                f"VT API Behaviour lookup Status code was non-200: {behavior_lookup.status_code} - {behavior_lookup.reason}",
             )
             return {}
         behavior_data = self.json.loads(behavior_lookup.content)["data"]

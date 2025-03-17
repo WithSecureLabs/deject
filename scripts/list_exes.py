@@ -21,7 +21,7 @@ def list_exes():
     """List the executables in the memory dump, having more than 1 is a good anomaly indicator."""
 
     sections = Deject.r2_handler.cmdj("iSj")
-    if sections is None: 
+    if sections is None:
         print("No exe(s) detected in the dump, this might be a bug!")
         return
     exes = extract(sections)
@@ -29,13 +29,16 @@ def list_exes():
     if len(exes) > 1:
         print("More than 1 exe found!")
     for exe in exes:
-        content = Deject.r2_handler.cmd("p8 {} @ {}".format(exe['size'], exe['vaddr']))
+        content = Deject.r2_handler.cmd(
+            "p8 {} @ {}".format(exe['size'], exe['vaddr']),
+        )
         sshash = ssdeep.hash(binascii.unhexlify(content.strip()))
-        rows.append([exe["name"], hex(exe["vaddr"]), hex(exe["size"]),sshash])
+        rows.append([exe["name"], hex(exe["vaddr"]), hex(exe["size"]), sshash])
 
     res = {"header": ["Name", "vaddr", "size", "ssdeep"], "rows": rows}
 
     return res
+
 
 def help():
     print("""

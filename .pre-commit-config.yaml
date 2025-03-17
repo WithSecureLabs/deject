@@ -1,0 +1,30 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+    -   id: trailing-whitespace
+        exclude: ^scripts/(yara-rules|extractors|pdf-tools|ole-tools|)/|^tests/|^scripts/test_plugin.py
+    -   id: end-of-file-fixer
+        exclude: ^scripts/(yara-rules|extractors|pdf-tools|ole-tools|)/|^tests/|^scripts/test_plugin.py
+    -   id: debug-statements
+        exclude: ^scripts/(yara-rules|extractors|pdf-tools|ole-tools|)/|^tests/|^scripts/test_plugin.py
+    -   id: check-yaml
+        exclude: ^scripts/(yara-rules|extractors|pdf-tools|ole-tools|)/|^tests/|^scripts/test_plugin.py
+    -   id: check-toml
+        exclude: ^scripts/(yara-rules|extractors|pdf-tools|ole-tools|)/|^tests/|^scripts/test_plugin.py
+-   repo: https://github.com/asottile/add-trailing-comma
+    rev: v3.1.0
+    hooks:
+    -   id: add-trailing-comma
+        exclude: ^scripts/(yara-rules|extractors|pdf-tools|ole-tools|)/|^tests/|^scripts/test_plugin.py
+-   repo: https://github.com/hhatto/autopep8
+    rev: v2.3.2
+    hooks:
+    -   id: autopep8
+        exclude: ^scripts/(yara-rules|extractors|pdf-tools|ole-tools|)/|^tests/|^scripts/test_plugin.py
+-   repo: https://github.com/pycqa/flake8
+    rev: 7.1.2
+    hooks:
+    -   id: flake8
+        args: ["--ignore=E501,E722,W605"]
+        exclude: ^scripts/(yara-rules|extractors|pdf-tools|ole-tools|)/|^tests/|^scripts/test_plugin.py

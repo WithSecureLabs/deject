@@ -4,14 +4,19 @@
 from deject.plugins import Deject
 import tlsh
 
+
 @Deject.plugin
 def elf_hashes():
     """Print TLSH hash of a DMG file"""
     with open(Deject.file_path, "rb") as f:
         data = f.read()
         hashes = tlsh.hash(data)
-        res = {"header": ["Filename","TLSH"], "rows": [[Deject.file_path,hashes]]}
+        res = {
+            "header": ["Filename", "TLSH"],
+            "rows": [[Deject.file_path, hashes]],
+        }
         return res
+
 
 def help():
     print("""

@@ -1,7 +1,7 @@
 #!/bin/bash
 sudo apt update && sudo apt upgrade -y && sudo apt install autoconf automake flex gcc g++ libssl-dev zlib1g-dev libexpat1-dev libxml2-dev dpkg-dev openssl patch wget bison git libewf-dev -y
 git clone --recursive https://github.com/simsong/bulk_extractor.git
-pushd bulk_extractor && ./bootstrap.sh && ./configure && make 
+pushd bulk_extractor && ./bootstrap.sh && ./configure && make
 popd
 mv bulk_extractor/src/bulk_extractor bin/
 sudo apt update ; apt upgrade -y

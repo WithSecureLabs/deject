@@ -10,9 +10,13 @@ from deject.plugins import Deject
 @Deject.plugin
 def list_bofs():
     """check for InvokeBof in the memory dump"""
-    sections = Deject.r2_handler.cmd(r"izzz | grep \"InvokeBof\" -C 5 | grep \"\.exe$\"")
-    sections += Deject.r2_handler.cmd(r"izzz | grep \"InvokeBof\" -C 5 | grep \"\.dll$\"")
-    if sections is None: 
+    sections = Deject.r2_handler.cmd(
+        r"izzz | grep \"InvokeBof\" -C 5 | grep \"\.exe$\"",
+    )
+    sections += Deject.r2_handler.cmd(
+        r"izzz | grep \"InvokeBof\" -C 5 | grep \"\.dll$\"",
+    )
+    if sections is None:
         print("InvokeBof not found in Dump. Potentially BOF free!")
         return
     rows = []
@@ -23,9 +27,10 @@ def list_bofs():
             section = d.split(" ")[7]
             rows.append([exe, section])
 
-    res = {"header":["Exe Name","Memory Section"], "rows": rows}
+    res = {"header": ["Exe Name", "Memory Section"], "rows": rows}
 
     return res
+
 
 def help():
     print("""

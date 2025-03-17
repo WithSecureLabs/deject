@@ -4,11 +4,12 @@
 """
 from deject.plugins import Deject
 
+
 @Deject.plugin
 def pe_exports():
     """List exports in a PE file."""
     exports = Deject.r2_handler.cmdj("iEj")
-    if exports is None: 
+    if exports is None:
         print("No exports detected in the file, this might be a bug!")
         return
     rows = []
@@ -17,6 +18,7 @@ def pe_exports():
     res = {"header": ["Name"], "rows": rows}
 
     return res
+
 
 def help():
     print("""

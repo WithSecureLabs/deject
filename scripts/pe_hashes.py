@@ -1,20 +1,22 @@
 """!
 @brief Get imphash, Rich hash, TLSH and ssdeep of executable and output Virus Total links.
-@details Can also support a memory dump with the base address of the memory region to extract 
+@details Can also support a memory dump with the base address of the memory region to extract
 in decimal.
 """
 from deject.plugins import Deject
 import pefile
 import ssdeep
-from typer import secho,colors
+from typer import secho, colors
 import tlsh
 from hashlib import md5
+
 
 def get_rich_header_hash(pe):
     if not hasattr(pe, "RICH_HEADER") or pe.RICH_HEADER is None:
         return ""
 
     return md5(pe.RICH_HEADER.clear_data).hexdigest()
+
 
 @Deject.plugin
 def pe_hashes():
@@ -27,20 +29,24 @@ def pe_hashes():
     except:
         base_addr = Deject.plugin_args
         if base_addr == "False":
-            secho("Please enter a decimal base address of a section to extract! Run:\npoetry run deject run --include pe_hashes /path/to/dump.dmp <baseaddr>.",\
-                  fg=colors.RED)
+            secho(
+                "Please enter a decimal base address of a section to extract! Run:\npoetry run deject run --include pe_hashes /path/to/dump.dmp <baseaddr>.",
+                fg=colors.RED,
+            )
             return
         sections = Deject.r2_handler.cmdj("iSj")
-        if sections is None: 
+        if sections is None:
             secho("No sections detected in the dump, this might be a bug!", fg=colors.RED)
             return
         sect = 0
         size = 0
         for section in sections:
             if section["vaddr"] == int(base_addr):
-                sect,size = hex(int(section["vaddr"])), section["size"]
+                sect, size = hex(int(section["vaddr"])), section["size"]
         if size == 0:
-            secho(f"Section {base_addr} not found in dump! Try using inspect_mmaps if this was an injected process.", fg=colors.RED)
+            secho(
+                f"Section {base_addr} not found in dump! Try using inspect_mmaps if this was an injected process.", fg=colors.RED,
+            )
             return
         try:
             pe = bytes.fromhex(Deject.r2_handler.cmd(f"p8 {size} @{sect}"))
@@ -55,13 +61,20 @@ def pe_hashes():
     if hasattr(pe, "get_rich_header_hash"):
         header_hash = pe.get_rich_header_hash()
         if len(header_hash) > 0:
-            print(f"https://www.virustotal.com/gui/search/rich_pe_header_hash:{header_hash}")
+            print(
+                f"https://www.virustotal.com/gui/search/rich_pe_header_hash:{header_hash}",
+            )
     else:
         header_hash = get_rich_header_hash(pe)
         if len(header_hash) > 0:
-            print(f"https://www.virustotal.com/gui/search/rich_pe_header_hash:{header_hash}")
-    print(f'https://www.virustotal.com/gui/search/ssdeep%253A%2522{ssdeep.hash(data).replace("/", "%252F").replace(":", "%253A").replace("+", "%252B")}%2522')
+            print(
+                f"https://www.virustotal.com/gui/search/rich_pe_header_hash:{header_hash}",
+            )
+    print(
+        f'https://www.virustotal.com/gui/search/ssdeep%253A%2522{ssdeep.hash(data).replace("/", "%252F").replace(":", "%253A").replace("+", "%252B")}%2522',
+    )
     print(f"https://www.virustotal.com/gui/search/tlsh:{tlsh.hash(data)}")
+
 
 def help():
     print("""

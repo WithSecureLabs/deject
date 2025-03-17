@@ -5,7 +5,7 @@ Download Bulk_Extractor and link or copy the binary to bin/ in Deject's root dir
 
 from deject.plugins import Deject
 import os
-from scripts.helpers import helpers,Settings
+from scripts.helpers import helpers, Settings
 
 
 @Deject.plugin
@@ -19,7 +19,10 @@ def bulk_extractor():
             bulk = Settings().getSetting("bulk_path")
         else:
             bulk = "bulk_extractor"
-    helpers.bin_exec(helpers,[bulk, "-o", f"{filepath}/extracted", "-0", filename])
+    helpers.bin_exec(
+        helpers, [bulk, "-o", f"{filepath}/extracted", "-0", filename],
+    )
+
 
 def help():
     print("""
