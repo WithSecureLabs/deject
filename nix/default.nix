@@ -9,7 +9,6 @@
   util-linux,
   file,
   # python
-  m2crypto,
   exceptiongroup,
   hexdump,
   kaitaistruct,
@@ -26,7 +25,8 @@
   telfhash,
   typer,
   yara-python,
-  # setuptools,
+  oletools,
+  olefile,
   # from overlay
   chepy,
   dotnetfile,
@@ -58,7 +58,7 @@
 in
   buildPythonPackage {
     pname = "deject";
-    version = "0.4.0";
+    version = "0.5.0";
 
     format = "pyproject";
 
@@ -80,7 +80,6 @@ in
       util-linux
       file
 
-      m2crypto
       exceptiongroup
       hexdump
       kaitaistruct
@@ -98,23 +97,25 @@ in
       typer
       yara-python
       pyyaml
-      # setuptools
 
       chepy
       dotnetfile
       netstruct
       libmagic
       mwcp
+      olefile
+      oletools
     ];
 
     postInstall = let
       scripts = "$out/lib/python3.11/site-packages/scripts";
     in ''
+      mkdir ${scripts}
       cp -r scripts/{extractors,pdf-tools} ${scripts}/
-      cp -r ${yara-rules} ${scripts}/
+      cp -r ${yara-rules} ${scripts}/yara-rules
 
-      cp -r ${malware-config-extractor} ${scripts}/extractors/
-      cp -r ${relayRumbler} ${scripts}/extractors/
+      cp -r ${malware-config-extractor} ${scripts}/extractors/MalwareConfigExtractor
+      cp -r ${relayRumbler} ${scripts}/extractors/RelayRumbler
     '';
 
     meta = with lib; {

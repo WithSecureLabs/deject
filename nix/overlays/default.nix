@@ -18,12 +18,6 @@ final: prev: {
               hash = "sha256-964JuUTzsXzPXOzGb5/1p6RbBTR0oTrrAS9MkgRHBDc=";
             };
           });
-          m2crypto = python-prev.m2crypto.overrideAttrs (self: super: {
-            src = final.fetchurl {
-              url = "https://files.pythonhosted.org/packages/85/9f/b8977ce2971cf5f823db3fdb31e7e061b9662da318a17b6bf0c653f84aee/m2crypto-0.42.0.tar.gz";
-              hash = "sha256-QrYt8sr2IxYbHWQ6cjVGTC/ioxBQSevEmKbUfcCPZLQ=";
-            };
-          });
         }
       )
     ];
